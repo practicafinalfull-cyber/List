@@ -8,15 +8,18 @@ import { Input } from "@/components/ui/input"
 
 interface TodoInputProps {
   onAdd: (text: string) => void
+  disabled?: boolean
 }
 
-export function TodoInput({ onAdd }: TodoInputProps) {
+export function TodoInput({ onAdd, disabled = false }: TodoInputProps) {
   const [input, setInput] = useState("")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onAdd(input)
-    setInput("")
+    if (!disabled && input.trim()) {
+      onAdd(input)
+      setInput("")
+    }
   }
 
   return (
@@ -28,8 +31,9 @@ export function TodoInput({ onAdd }: TodoInputProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="flex-1"
+          disabled={disabled}
         />
-        <Button type="submit" className="px-6">
+        <Button type="submit" className="px-6" disabled={disabled}>
           Add
         </Button>
       </div>
